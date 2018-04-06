@@ -8,12 +8,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
     <script type="text/javascript">
            $(document).ready(function() {
-
-
-
-
-
-
+//Esta es la tabla de los 87 Personajes
   var table = $('#example').DataTable( {
         "columns": [
             { "data": "name" },
@@ -23,7 +18,18 @@
             { "data": "gender" }
         ]
     } );
+//Esta es la tabla para llenar con la infromacion de peliculas, naves y vehiculos del personaje seleccionado de la tabla
+  var tableDos = $('#exampleDos').DataTable( {
+        "columns": [
+            { "data": "films" },
+                 { "data": "vehicles" },
+                  { "data": "starships" }
+       
+         
+        ]
+    } );
 
+//Llamadas AJAX para los personajes
   
   $.ajax({
      url: 'https://swapi.co/api/people/',
@@ -93,10 +99,39 @@
      url: 'https://swapi.co/api/people/?page=9',
      dataType: 'json',
      success: function(json){
+console.log(json)
+console.log(json.results)
        table.rows.add(json.results).draw();
+   }
+ });//Aqui termina llamadas AJAX de personajes
+
+
+//Esto es para que cuando añguien seleccione algun personaje de la tabla, se envie la informacion a la tabla dos y muestre peliculas, naves y vehiculos
+      $('#example tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        alert( 'You clicked on '+data.url+'\'s row' );
+         $.ajax({
+     url: data.url,
+     dataType: 'json',
+     success: function(json){
+       tableDos.rows.add(json.films[0]).draw();
    }
  });
 
+    } );
+
+//Esto es el buscador de personajes de prueba
+$('#boton').click(function() {
+    var text= $('#busca').val()
+    var url= 'https://swapi.co/api/people/?search='+text;
+     $.ajax({
+     url: url,
+     dataType: 'json',
+     success: function(json){
+       alert(json.results[0].name)
+   }
+ });
+})
 } );
     </script>
 
@@ -106,6 +141,10 @@
     
 </head>
 <body>
+
+
+    <input type="text" id="busca" >
+    <input type="button" name="" id="boton" value="Buscar">
 <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
@@ -114,7 +153,17 @@
                 <th>Color de Pelo</th>
                 <th>Color de Piel</th>
                 <th>Genero</th>
-        
+            </tr>
+        </thead>
+      
+    </table>
+
+    <table id="exampleDos" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Peliculas</th>
+                <th>Vehiculos</th>
+                <th>Naves</th>
             </tr>
         </thead>
       
