@@ -48,125 +48,150 @@
  
  //var i=0;
 //Esta es la tabla para llenar con la infromacion de peliculas, naves y vehiculos del personaje seleccionado de la tabla
-var tableDos = $('#exampleDos').DataTable({
-    "columns": [{
-        "title": "Films",
-        "data": "films",
-        render: function (data, type, row, meta) {
-            var currentCell = $("#exampleDos").DataTable().cells({"row":meta.row, "column":meta.col}).nodes(0);
-      //      $.each(data, function (i, item){  
+var tableDos = $('#pelis').DataTable({
+    data: nomPeli,
+    columns: [
+            { title: "Peliculas" }
+        ]
+  });
 
-                 $.ajax({
-                url: data[0],
-                success: function(json){
-                    console.log(json)
-                       $(currentCell).text(json.title);          
-                }
-            });       
-          //  })
-            return null;
-        }
-      },
-      {
-        "title": "Vehicles",
-        "data": "vehicles"
-      },
-       {
-        "title": "Starships",
-        "data": "starships"
-      }
-    ]
+var tabVehi = $('#vehiculos').DataTable({
+    data: nomVehi,
+    columns: [
+            { title: "Vehiculos" }
+        ]
+  });
+
+var tabStar = $('#starships').DataTable({
+    data: nomStar,
+     columns: [
+            { title: "Naves Espaciales" }
+        ]
   });
  
 
 //Llamadas AJAX para los personajes
   
-  $.ajax({
+ var a= $.ajax({
      url: 'https://swapi.co/api/people/',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-  $.ajax({
+  var b=$.ajax({
      url: 'https://swapi.co/api/people/?page=2',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-   $.ajax({
+   var c=$.ajax({
      url: 'https://swapi.co/api/people/?page=3',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-    $.ajax({
+   var d= $.ajax({
      url: 'https://swapi.co/api/people/?page=4',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-      $.ajax({
+     var e= $.ajax({
      url: 'https://swapi.co/api/people/?page=5',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-        $.ajax({
+        var f=$.ajax({
      url: 'https://swapi.co/api/people/?page=6',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-          $.ajax({
+         var g= $.ajax({
      url: 'https://swapi.co/api/people/?page=7',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-            $.ajax({
+            var h=$.ajax({
      url: 'https://swapi.co/api/people/?page=8',
      dataType: 'json',
-     success: function(json){
-       table.rows.add(json.results).draw();
-   }
  });
 
-              $.ajax({
+             var i= $.ajax({
      url: 'https://swapi.co/api/people/?page=9',
      dataType: 'json',
-     success: function(json){
-console.log(json)
-console.log(json.results)
-       table.rows.add(json.results).draw();
-   }
+     
  });//Aqui termina llamadas AJAX de personajes
+
+             $.when(a,b, c, d, e, f, g, h, i).done(function(rA,rB, rC, rD, rE, rF, rG, rH, rI){
+                table.rows.add(rA[0].results).draw();
+                 table.rows.add(rB[0].results).draw();
+                  table.rows.add(rC[0].results).draw();
+                   table.rows.add(rD[0].results).draw();
+                    table.rows.add(rE[0].results).draw();
+                     table.rows.add(rF[0].results).draw();
+                      table.rows.add(rG[0].results).draw();
+                       table.rows.add(rH[0].results).draw();
+                        table.rows.add(rI[0].results).draw();
+             })
 
 
 //Esto es para que cuando añguien seleccione algun personaje de la tabla, se envie la informacion a la tabla dos y muestre peliculas, naves y vehiculos
+var arrayPeli=[];
+var arrayVehi=[];
+var arrayStar=[];
+var nomPeli=[];
+var nomVehi=[];
+var nomStar=[];
       $('#example tbody').on('click', 'tr', function () {
         var data = table.row( this ).data();
         alert( 'You clicked on '+data.name+'\'s row' );
          $.ajax({
      url: data.url,
      dataType: 'json',
+ }).done(function(json) {
+    arrayPeli=json.films;
+    arrayVehi=json.vehicles;
+    arrayStar=json.starships;
+
+
+    for (var i = 0; i < arrayPeli.length; i++) {
+       var peli=$.ajax({
+     url: arrayPeli[i],
+     dataType: 'json',
      success: function(json){
-     console.log(json)
-       tableDos.rows.add([json]).draw();
-   }
+     nomPeli.push(json.title)
+     }
+ });
+    };
+
+    for (var i = 0; i < arrayVehi.length; i++) {
+        console.log(arrayVehi[i])
+          var vehi=$.ajax({
+     url: arrayVehi[i],
+     dataType: 'json',
+     success: function(json){
+        nomVehi.push(json.name)
+     }
+ });
+    };
+    for (var i = 0; i < arrayStar.length; i++) {
+        console.log(arrayStar[i])
+          var star=$.ajax({
+     url: arrayStar[i],
+     dataType: 'json',
+     success: function(json){
+        nomStar.push(json.name)
+     }
+ });
+    };
+
+     $.when(nomPeli, nomVehi, nomStar).done(function(p, v, s){
+               console.log(p)
+                console.log(v)
+                 console.log([s])
+                 tableDos.rows.add(p).draw();
+                 tabVehi.rows.add(v).draw();
+                      tabStar.rows.add(s).draw();
+             })
+
+
+      //tableDos.rows.add([json]).draw();
  });
 
     } );
@@ -179,12 +204,9 @@ $('#boton').click(function() {
      $.ajax({
      url: url,
      dataType: 'json',
-     success: function(json){
-        console.log(json)
-        console.log(json.results)
-       tableThree.rows.add(json.results).draw();
-   }
- });
+ }).done(function(json){
+      tableThree.rows.add(json.results).draw();
+  });
 })
 } );
     </script>
@@ -208,7 +230,13 @@ $('#boton').click(function() {
       
     </table>
 
-    <table id="exampleDos" class="display" style="width:100%"> 
+    <table id="pelis" class="display" style="width:100%"> 
+    </table>
+
+      <table id="vehiculos" class="display" style="width:100%"> 
+    </table>
+
+      <table id="starships" class="display" style="width:100%"> 
     </table>
 
     <table id="exampleThree" class="display" style="width:100%">
