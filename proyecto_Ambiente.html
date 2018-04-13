@@ -149,45 +149,47 @@ var nomStar=[];
     arrayVehi=json.vehicles;
     arrayStar=json.starships;
 
-
-    for (var i = 0; i < arrayPeli.length; i++) {
-       var peli=$.ajax({
-     url: arrayPeli[i],
+$.each(arrayPeli, function (index, value) {
+    console.log(value)
+      var peli= $.ajax({
+     url: value,
      dataType: 'json',
      success: function(json){
      nomPeli.push(json.title)
      }
  });
-    };
+});
+   
+      $.each(arrayVehi, function (index, value) {
+    console.log(value)
+     var vehi=  $.ajax({
+     url: value,
+     dataType: 'json',
+     success: function(json){
+     nomVehi.push(json.name)
+     }
+ });
+});
 
-    for (var i = 0; i < arrayVehi.length; i++) {
-        console.log(arrayVehi[i])
-          var vehi=$.ajax({
-     url: arrayVehi[i],
+       $.each(arrayStar, function (index, value) {
+    console.log(value)
+      var star=$.ajax({
+     url: value,
      dataType: 'json',
      success: function(json){
-        nomVehi.push(json.name)
+     nomStar.push(json.name)
      }
  });
-    };
-    for (var i = 0; i < arrayStar.length; i++) {
-        console.log(arrayStar[i])
-          var star=$.ajax({
-     url: arrayStar[i],
-     dataType: 'json',
-     success: function(json){
-        nomStar.push(json.name)
-     }
- });
-    };
+});
+    
 
      $.when(nomPeli, nomVehi, nomStar).done(function(p, v, s){
-               console.log(p)
+               console.log(nomStar.length)
                 console.log(v)
                  console.log([s])
                  tableDos.rows.add(p).draw();
                  tabVehi.rows.add(v).draw();
-                      tabStar.rows.add(s).draw();
+                      tabStar.rows.add(nomStar).draw();
              })
 
 
