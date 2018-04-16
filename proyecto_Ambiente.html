@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8"></meta>
     <title>Proyecto Ambiente</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+   <script src="file:///C:/Users/Laboratorios/Downloads/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="file:///C:/Users/Laboratorios/Downloads/DataTables/DataTables-1.10.16/css/jquery.dataTables.css"/>
+    <script type="text/javascript" src="file:///C:/Users/Laboratorios/Downloads/DataTables/datatables.js"></script>
     <script type="text/javascript">
            $(document).ready(function() {
 
@@ -139,6 +139,12 @@ var nomPeli=[];
 var nomVehi=[];
 var nomStar=[];
       $('#example tbody').on('click', 'tr', function () {
+        tableDos.clear().draw();
+        tabVehi.clear().draw();
+        tabStar.clear().draw();
+        nomPeli=[];
+        nomVehi=[];
+        nomStar=[];
         var data = table.row( this ).data();
         alert( 'You clicked on '+data.name+'\'s row' );
          $.ajax({
@@ -150,53 +156,62 @@ var nomStar=[];
     arrayStar=json.starships;
 
 $.each(arrayPeli, function (index, value) {
-    console.log(value)
-      var peli= $.ajax({
-     url: value,
-     dataType: 'json',
-     success: function(json){
-     nomPeli.push(json.title)
-     }
+      var peli= 
+      $.ajax({
+       url: value,
+       dataType: 'json',
+       success: function(json){
+         nomPeli.push(json.title)
+         pintarPeliculas(arrayPeli, nomPeli);
+       }
  });
 });
    
       $.each(arrayVehi, function (index, value) {
-    console.log(value)
      var vehi=  $.ajax({
      url: value,
      dataType: 'json',
      success: function(json){
      nomVehi.push(json.name)
+     pintarVehiculos(arrayVehi, nomVehi);
      }
  });
 });
 
        $.each(arrayStar, function (index, value) {
-    console.log(value)
       var star=$.ajax({
      url: value,
      dataType: 'json',
      success: function(json){
      nomStar.push(json.name)
+     pintarStarships(arrayStar, nomStar);
      }
  });
 });
-    
-
-     $.when(nomPeli, nomVehi, nomStar).done(function(p, v, s){
-               console.log(nomStar.length)
-                console.log(v)
-                 console.log([s])
-                 tableDos.rows.add(p).draw();
-                 tabVehi.rows.add(v).draw();
-                      tabStar.rows.add(nomStar).draw();
-             })
-
-
-      //tableDos.rows.add([json]).draw();
  });
 
     } );
+
+      function pintarPeliculas(arrayPeli, nomPeli){
+        if(arrayPeli.length==nomPeli.length){
+           tableDos.row.add([nomPeli]).draw();
+        }
+           
+      }
+
+        function pintarVehiculos(arrayVehi, nomVehi){
+        if(arrayVehi.length==nomVehi.length){
+           tabVehi.row.add([nomVehi]).draw();
+        }
+           
+      }
+
+        function pintarStarships(arrayStar, nomStar){
+        if(arrayStar.length==nomStar.length){
+           tabStar.row.add([nomStar]).draw();
+        }
+           
+      }
 
 //Esto es el buscador de personajes de prueba
 $('#boton').click(function() {
