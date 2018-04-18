@@ -3,14 +3,17 @@
 <head>
     <meta charset="utf-8"></meta>
     <title>Proyecto Ambiente</title>
-   <script src="file:///C:/Users/Laboratorios/Downloads/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="file:///C:/Users/Laboratorios/Downloads/DataTables/DataTables-1.10.16/css/jquery.dataTables.css"/>
-    <script type="text/javascript" src="file:///C:/Users/Laboratorios/Downloads/DataTables/datatables.js"></script>
-    <script type="text/javascript">
-           $(document).ready(function() {
+   <script src="jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.dataTables.css"/>
+    <script type="text/javascript" src="datatables.js"></script>
 
-//Esta es la tabla de los 87 Personajes
-  var table = $('#example').DataTable( {
+    <script type="text/javascript">
+      //Inicializacion de JQuery
+           $(document).ready(function() {
+            //Esconder tabla de busqueda, informacion y boton
+            $('#divTablaBusc, #divTablasInfo, #botonDevolverse').hide();
+//Esta es la inicializacion de tabla de los 87 Personajes
+  var tablaPersonajes = $('#personajes').DataTable( {
         "columns": [
             { "data": "name" },
             { "data": "height" },
@@ -20,178 +23,180 @@
         ]
     } );
 
-  //Tabla de busqyeda
+  //Tabla de busqueda
 
-  var tableThree = $('#exampleThree').DataTable({
+  var tablaDeBusc = $('#tablaBusqueda').DataTable({
     "columns": [{
-        "title": "Name",
+        "title": "Nombre",
         "data": "name"
       },
       {
-        "title": "Height",
+        "title": "Altura",
         "data": "height"
       },
       {
-        "title": "Hair Colour",
+        "title": "Color de pelo",
         "data": "hair_color"
       },
       {
-        "title": "Skin Colour",
+        "title": "Color de Piel",
         "data": "skin_color"
       },
       {
-        "title": "Gender",
+        "title": "Genero",
         "data": "gender"
       }
     ]
   });
  
- //var i=0;
-//Esta es la tabla para llenar con la infromacion de peliculas, naves y vehiculos del personaje seleccionado de la tabla
-var tableDos = $('#pelis').DataTable({
-    data: nomPeli,
-    columns: [
-            { title: "Peliculas" }
-        ]
-  });
-
-var tabVehi = $('#vehiculos').DataTable({
-    data: nomVehi,
-    columns: [
-            { title: "Vehiculos" }
-        ]
-  });
-
-var tabStar = $('#starships').DataTable({
-    data: nomStar,
-     columns: [
-            { title: "Naves Espaciales" }
-        ]
-  });
  
+//Esta es la tabla para llenar con la infromacion de peliculas, naves y vehiculos del personaje seleccionado de la tabla
+  var tableDos = $('#pelis').DataTable({
+      data: nomPeli,
+      columns: [
+              { title: "Peliculas" }
+          ]
+    });
+
+  var tabVehi = $('#vehiculos').DataTable({
+      data: nomVehi,
+      columns: [
+              { title: "Vehiculos" }
+          ]
+    });
+
+  var tabStar = $('#starships').DataTable({
+      data: nomStar,
+       columns: [
+              { title: "Naves Espaciales" }
+          ]
+    });
+   
 
 //Llamadas AJAX para los personajes
   
- var a= $.ajax({
-     url: 'https://swapi.co/api/people/',
-     dataType: 'json',
- });
+   var a= $.ajax({
+       url: 'https://swapi.co/api/people/',
+       dataType: 'json',
+   });
 
-  var b=$.ajax({
-     url: 'https://swapi.co/api/people/?page=2',
-     dataType: 'json',
- });
+    var b=$.ajax({
+       url: 'https://swapi.co/api/people/?page=2',
+       dataType: 'json',
+   });
 
-   var c=$.ajax({
-     url: 'https://swapi.co/api/people/?page=3',
-     dataType: 'json',
- });
+     var c=$.ajax({
+       url: 'https://swapi.co/api/people/?page=3',
+       dataType: 'json',
+   });
 
-   var d= $.ajax({
-     url: 'https://swapi.co/api/people/?page=4',
-     dataType: 'json',
- });
+     var d= $.ajax({
+       url: 'https://swapi.co/api/people/?page=4',
+       dataType: 'json',
+   });
 
-     var e= $.ajax({
-     url: 'https://swapi.co/api/people/?page=5',
-     dataType: 'json',
- });
+       var e= $.ajax({
+       url: 'https://swapi.co/api/people/?page=5',
+       dataType: 'json',
+   });
 
-        var f=$.ajax({
-     url: 'https://swapi.co/api/people/?page=6',
-     dataType: 'json',
- });
+          var f=$.ajax({
+       url: 'https://swapi.co/api/people/?page=6',
+       dataType: 'json',
+   });
 
-         var g= $.ajax({
-     url: 'https://swapi.co/api/people/?page=7',
-     dataType: 'json',
- });
+           var g= $.ajax({
+       url: 'https://swapi.co/api/people/?page=7',
+       dataType: 'json',
+   });
 
-            var h=$.ajax({
-     url: 'https://swapi.co/api/people/?page=8',
-     dataType: 'json',
- });
+              var h=$.ajax({
+       url: 'https://swapi.co/api/people/?page=8',
+       dataType: 'json',
+   });
 
-             var i= $.ajax({
-     url: 'https://swapi.co/api/people/?page=9',
-     dataType: 'json',
-     
- });//Aqui termina llamadas AJAX de personajes
-
+               var i= $.ajax({
+       url: 'https://swapi.co/api/people/?page=9',
+       dataType: 'json',
+       
+   });//Aqui termina llamadas AJAX de personajes
+            //Esto es para esperar a que las llamadas esten listas y poder mostrar la informacion
              $.when(a,b, c, d, e, f, g, h, i).done(function(rA,rB, rC, rD, rE, rF, rG, rH, rI){
-                table.rows.add(rA[0].results).draw();
-                 table.rows.add(rB[0].results).draw();
-                  table.rows.add(rC[0].results).draw();
-                   table.rows.add(rD[0].results).draw();
-                    table.rows.add(rE[0].results).draw();
-                     table.rows.add(rF[0].results).draw();
-                      table.rows.add(rG[0].results).draw();
-                       table.rows.add(rH[0].results).draw();
-                        table.rows.add(rI[0].results).draw();
+                tablaPersonajes.rows.add(rA[0].results).draw();
+                  tablaPersonajes.rows.add(rB[0].results).draw();
+                  tablaPersonajes.rows.add(rC[0].results).draw();
+                   tablaPersonajes.rows.add(rD[0].results).draw();
+                    tablaPersonajes.rows.add(rE[0].results).draw();
+                     tablaPersonajes.rows.add(rF[0].results).draw();
+                      tablaPersonajes.rows.add(rG[0].results).draw();
+                       tablaPersonajes.rows.add(rH[0].results).draw();
+                        tablaPersonajes.rows.add(rI[0].results).draw();
              })
 
 
-//Esto es para que cuando añguien seleccione algun personaje de la tabla, se envie la informacion a la tabla dos y muestre peliculas, naves y vehiculos
-var arrayPeli=[];
-var arrayVehi=[];
-var arrayStar=[];
-var nomPeli=[];
-var nomVehi=[];
-var nomStar=[];
-      $('#example tbody').on('click', 'tr', function () {
+//Esto es para que cuando alguien seleccione algun personaje de la tabla, se envie la informacion a la tabla de informacion y muestre peliculas, naves y vehiculos
+      var arrayPeli=[];
+      var arrayVehi=[];
+      var arrayStar=[];
+      var nomPeli=[];
+      var nomVehi=[];
+      var nomStar=[];
+//Metodo que al darle clic mande la informacion al ajax y asi procesar todo lo que devuelve el API
+      $('#personajes tbody').on('click', 'tr', function () {
+        $('#divTablasInfo').show();
         tableDos.clear().draw();
         tabVehi.clear().draw();
         tabStar.clear().draw();
         nomPeli=[];
         nomVehi=[];
         nomStar=[];
-        var data = table.row( this ).data();
+        var data = tablaPersonajes.row( this ).data();
         alert( 'You clicked on '+data.name+'\'s row' );
          $.ajax({
-     url: data.url,
-     dataType: 'json',
- }).done(function(json) {
-    arrayPeli=json.films;
-    arrayVehi=json.vehicles;
-    arrayStar=json.starships;
+            url: data.url,
+            dataType: 'json',
+        }).done(function(json) {
+            arrayPeli=json.films;
+            arrayVehi=json.vehicles;
+            arrayStar=json.starships;
 
-$.each(arrayPeli, function (index, value) {
-      var peli= 
-      $.ajax({
-       url: value,
-       dataType: 'json',
-       success: function(json){
-         nomPeli.push(json.title)
-         pintarPeliculas(arrayPeli, nomPeli);
-       }
- });
-});
+        $.each(arrayPeli, function (index, value) {
+              var peli= 
+              $.ajax({
+               url: value,
+               dataType: 'json',
+               success: function(json){
+                 nomPeli.push(json.title)
+                 pintarPeliculas(arrayPeli, nomPeli);
+               }
+         });
+        });
    
-      $.each(arrayVehi, function (index, value) {
-     var vehi=  $.ajax({
-     url: value,
-     dataType: 'json',
-     success: function(json){
-     nomVehi.push(json.name)
-     pintarVehiculos(arrayVehi, nomVehi);
-     }
- });
-});
+        $.each(arrayVehi, function (index, value) {
+               var vehi=  $.ajax({
+               url: value,
+               dataType: 'json',
+               success: function(json){
+               nomVehi.push(json.name)
+               pintarVehiculos(arrayVehi, nomVehi);
+               }
+          });
+        });
 
        $.each(arrayStar, function (index, value) {
-      var star=$.ajax({
-     url: value,
-     dataType: 'json',
-     success: function(json){
-     nomStar.push(json.name)
-     pintarStarships(arrayStar, nomStar);
-     }
- });
-});
+               var star=$.ajax({
+               url: value,
+               dataType: 'json',
+               success: function(json){
+               nomStar.push(json.name)
+               pintarStarships(arrayStar, nomStar);
+               }
+          });
+        });
  });
 
     } );
-
+      //Funciones callback para verificar que el array que se lleno con los nombres es del mismo largo que el array de URLS
       function pintarPeliculas(arrayPeli, nomPeli){
         if(arrayPeli.length==nomPeli.length){
            tableDos.row.add([nomPeli]).draw();
@@ -213,19 +218,96 @@ $.each(arrayPeli, function (index, value) {
            
       }
 
-//Esto es el buscador de personajes de prueba
-$('#boton').click(function() {
-    var text= $('#busca').val()
-    var url= 'https://swapi.co/api/people/?search='+text;
-    console.log(url)
-     $.ajax({
-     url: url,
-     dataType: 'json',
- }).done(function(json){
-      tableThree.rows.add(json.results).draw();
-  });
-})
-} );
+//Esto es el buscador de personajes por el input text
+      $('#boton').click(function() {
+        $('#parraf, #divTablaPers, #divTablasInfo').hide();
+
+        $('#botonDevolverse, #divTablaBusc').show();
+
+        tablaDeBusc.clear().draw();
+
+        var text= $('#busca').val()
+
+        var url= 'https://swapi.co/api/people/?search='+text;
+
+           $.ajax({
+               url: url,
+               dataType: 'json',
+            }).done(function(json){
+                 tablaDeBusc.rows.add(json.results).draw();
+          });
+      })
+
+      //Esto es la funcion para esconder tablas mediante el boton de devolverse
+      $('#botonDevolverse').click(function(){
+
+        tableDos.clear().draw();
+
+        tabVehi.clear().draw();
+
+        tabStar.clear().draw();
+
+        $('#parraf, #divTablaPers').show();
+
+        $('#divTablaBusc, #botonDevolverse, #divTablasInfo').hide();
+      })
+
+      //Metodo para busqueda de informacion en la tabla de peliculas
+      $('#tablaBusqueda tbody').on('click', 'tr', function(){
+          $('#divTablasInfo').show();
+              tableDos.clear().draw();
+              tabVehi.clear().draw();
+              tabStar.clear().draw();
+              nomPeli=[];
+              nomVehi=[];
+              nomStar=[];
+              var data = tablaDeBusc.row(this).data();
+                $.ajax({
+                    url: data.url,
+                    dataType: 'json',
+                }).done(function(json) {
+                    arrayPeli=json.films;
+                    arrayVehi=json.vehicles;
+                    arrayStar=json.starships;
+
+                $.each(arrayPeli, function (index, value) {
+                      var peli= 
+                      $.ajax({
+                         url: value,
+                         dataType: 'json',
+                         success: function(json){
+                           nomPeli.push(json.title)
+                           pintarPeliculas(arrayPeli, nomPeli);
+                       }
+                 });
+                });
+           
+                $.each(arrayVehi, function (index, value) {
+                       var vehi=  
+                       $.ajax({
+                           url: value,
+                           dataType: 'json',
+                           success: function(json){
+                           nomVehi.push(json.name)
+                           pintarVehiculos(arrayVehi, nomVehi);
+                       }
+                  });
+                });
+
+               $.each(arrayStar, function (index, value) {
+                       var star=
+                       $.ajax({
+                           url: value,
+                           dataType: 'json',
+                           success: function(json){
+                           nomStar.push(json.name)
+                           pintarStarships(arrayStar, nomStar);
+                       }
+                  });
+                });
+       });
+      })
+});
     </script>
     
 </head>
@@ -233,8 +315,17 @@ $('#boton').click(function() {
 
 
     <input type="text" id="busca" ></input>
+
     <input type="button" name="" id="boton" value="Buscar"></input>
-<table id="example" class="display" style="width:100%">
+
+    <br>
+
+    <p id="parraf">Seleccione el personaje de la tabla para ver su informacion: </p>
+
+    <input type="button" name="" id="botonDevolverse" value="Devolverse a tabla principal"></input>
+
+    <div id="divTablaPers">
+      <table id="personajes" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -244,10 +335,17 @@ $('#boton').click(function() {
                 <th>Genero</th>
             </tr>
         </thead>
-      
     </table>
+    </div>
 
-    <table id="pelis" class="display" style="width:100%"> 
+
+    <div id="divTablaBusc">
+        <table id="tablaBusqueda" class="display" style="width:100%">
+    </table>
+    </div>
+
+    <div id="divTablasInfo">
+      <table id="pelis" class="display" style="width:100%"> 
     </table>
 
       <table id="vehiculos" class="display" style="width:100%"> 
@@ -255,18 +353,7 @@ $('#boton').click(function() {
 
       <table id="starships" class="display" style="width:100%"> 
     </table>
+    </div>
 
-    <table id="exampleThree" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Altura</th>
-                <th>Color de Pelo</th>
-                <th>Color de Piel</th>
-                <th>Genero</th>
-            </tr>
-        </thead>
-      
-    </table>
 </body>
 </html>
