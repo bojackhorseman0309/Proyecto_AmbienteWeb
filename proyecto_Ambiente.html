@@ -131,6 +131,7 @@
                       tablaPersonajes.rows.add(rG[0].results).draw();
                        tablaPersonajes.rows.add(rH[0].results).draw();
                         tablaPersonajes.rows.add(rI[0].results).draw();
+                         $('#divBotonCarga').hide();
              })
 
 
@@ -143,15 +144,21 @@
       var nomStar=[];
 //Metodo que al darle clic mande la informacion al ajax y asi procesar todo lo que devuelve el API
       $('#personajes tbody').on('click', 'tr', function () {
-        $('#divTablasInfo').show();
+
+        $('#divTablasInfo, #divBotonCarga').show();
+
         tableDos.clear().draw();
+
         tabVehi.clear().draw();
+
         tabStar.clear().draw();
+
         nomPeli=[];
         nomVehi=[];
         nomStar=[];
+
         var data = tablaPersonajes.row( this ).data();
-        alert( 'You clicked on '+data.name+'\'s row' );
+
          $.ajax({
             url: data.url,
             dataType: 'json',
@@ -168,36 +175,41 @@
                success: function(json){
                  nomPeli.push(json.title)
                  pintarPeliculas(arrayPeli, nomPeli);
+                    $('#divBotonCarga').hide();
                }
          });
         });
    
         $.each(arrayVehi, function (index, value) {
-               var vehi=  $.ajax({
-               url: value,
-               dataType: 'json',
-               success: function(json){
-               nomVehi.push(json.name)
-               pintarVehiculos(arrayVehi, nomVehi);
-               }
+               var vehi=
+                $.ajax({
+                   url: value,
+                   dataType: 'json',
+                   success: function(json){
+                   nomVehi.push(json.name)
+                   pintarVehiculos(arrayVehi, nomVehi);
+                      $('#divBotonCarga').hide();
+                   }
           });
         });
 
        $.each(arrayStar, function (index, value) {
-               var star=$.ajax({
-               url: value,
-               dataType: 'json',
-               success: function(json){
-               nomStar.push(json.name)
-               pintarStarships(arrayStar, nomStar);
-               }
+               var star=
+               $.ajax({
+                 url: value,
+                 dataType: 'json',
+                 success: function(json){
+                 nomStar.push(json.name)
+                 pintarStarships(arrayStar, nomStar);
+                    $('#divBotonCarga').hide();
+                 }
           });
         });
- });
-
-    } );
+      });
+   });
       //Funciones callback para verificar que el array que se lleno con los nombres es del mismo largo que el array de URLS
       function pintarPeliculas(arrayPeli, nomPeli){
+
         if(arrayPeli.length==nomPeli.length){
            tableDos.row.add([nomPeli]).draw();
         }
@@ -205,6 +217,7 @@
       }
 
         function pintarVehiculos(arrayVehi, nomVehi){
+
         if(arrayVehi.length==nomVehi.length){
            tabVehi.row.add([nomVehi]).draw();
         }
@@ -212,6 +225,7 @@
       }
 
         function pintarStarships(arrayStar, nomStar){
+
         if(arrayStar.length==nomStar.length){
            tabStar.row.add([nomStar]).draw();
         }
@@ -220,9 +234,10 @@
 
 //Esto es el buscador de personajes por el input text
       $('#boton').click(function() {
+
         $('#parraf, #divTablaPers, #divTablasInfo').hide();
 
-        $('#botonDevolverse, #divTablaBusc').show();
+        $('#botonDevolverse, #divTablaBusc, #divBotonCarga').show();
 
         tablaDeBusc.clear().draw();
 
@@ -235,6 +250,7 @@
                dataType: 'json',
             }).done(function(json){
                  tablaDeBusc.rows.add(json.results).draw();
+                 $('#divBotonCarga').hide();
           });
       })
 
@@ -254,18 +270,27 @@
 
       //Metodo para busqueda de informacion en la tabla de peliculas
       $('#tablaBusqueda tbody').on('click', 'tr', function(){
-          $('#divTablasInfo').show();
+          $('#divTablasInfo, #divBotonCarga').show();
+
               tableDos.clear().draw();
+
               tabVehi.clear().draw();
+
               tabStar.clear().draw();
+
               nomPeli=[];
+
               nomVehi=[];
+
               nomStar=[];
+
               var data = tablaDeBusc.row(this).data();
+
                 $.ajax({
                     url: data.url,
                     dataType: 'json',
                 }).done(function(json) {
+
                     arrayPeli=json.films;
                     arrayVehi=json.vehicles;
                     arrayStar=json.starships;
@@ -278,6 +303,7 @@
                          success: function(json){
                            nomPeli.push(json.title)
                            pintarPeliculas(arrayPeli, nomPeli);
+                           $('#divBotonCarga').hide();
                        }
                  });
                 });
@@ -290,6 +316,7 @@
                            success: function(json){
                            nomVehi.push(json.name)
                            pintarVehiculos(arrayVehi, nomVehi);
+                           $('#divBotonCarga').hide();
                        }
                   });
                 });
@@ -302,17 +329,41 @@
                            success: function(json){
                            nomStar.push(json.name)
                            pintarStarships(arrayStar, nomStar);
+                           $('#divBotonCarga').hide();
                        }
                   });
                 });
        });
       })
-});
+               $('#divBotonCarga').css({
+                "width": "100%",
+                "height": "100%",
+                "top": "0px",
+                "left": "0px",
+                "position": "fixed",
+                "opacity" : "0.8",
+                "background-color": "#fff",
+                "z-index": "99",
+                "text-align": "center"
+               });
+
+               $('#imagenCarga').css({
+                "position": "absolute",
+                "top": "50%",
+                "left": "50%",
+                "z-index": "100",
+                "transform":"translate(-50%,-50%)"
+               });
+
+  });
     </script>
     
 </head>
 <body>
-
+    
+    <div id="divBotonCarga">
+      <img id="imagenCarga" src="https://media.giphy.com/media/y1ZBcOGOOtlpC/giphy.gif" alt="Cargando Tabla">
+    </div>
 
     <input type="text" id="busca" ></input>
 
