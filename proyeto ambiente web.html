@@ -2,10 +2,20 @@
 <html>
 <head>
     <meta charset="utf-8"></meta>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Proyecto Ambiente</title>
-   <script src="jquery-3.3.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="jquery.dataTables.css"/>
-    <script type="text/javascript" src="datatables.js"></script>
+
+    <script src="file:///C:/Users/Paula/Desktop/proyecto%20ambiente%20web%20final/jquery-3.3.1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="file:///C:/Users/Paula/Desktop/proyecto%20ambiente%20web%20final/datatables.css"/>
+
+    <script type="text/javascript" src="file:///C:/Users/Paula/Desktop/proyecto%20ambiente%20web%20final/datatables.js"></script>
+
+    <script type="text/javascript" src="file:///C:/Users/Paula/Desktop/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="file:///C:/Users/Paula/Desktop/css/bootstrap.css">
 
     <script type="text/javascript">
       //Inicializacion de JQuery
@@ -14,6 +24,7 @@
             $('#divTablaBusc, #divTablasInfo, #botonDevolverse').hide();
 //Esta es la inicializacion de tabla de los 87 Personajes
   var tablaPersonajes = $('#personajes').DataTable( {
+  		"searching": false,
         "columns": [
             { "data": "name" },
             { "data": "height" },
@@ -22,28 +33,22 @@
             { "data": "gender" }
         ]
     } );
-
   //Tabla de busqueda
-
   var tablaDeBusc = $('#tablaBusqueda').DataTable({
+  	"searching": false,
     "columns": [{
-        "title": "Nombre",
         "data": "name"
       },
       {
-        "title": "Altura",
         "data": "height"
       },
       {
-        "title": "Color de pelo",
         "data": "hair_color"
       },
       {
-        "title": "Color de Piel",
         "data": "skin_color"
       },
       {
-        "title": "Genero",
         "data": "gender"
       }
     ]
@@ -52,69 +57,61 @@
  
 //Esta es la tabla para llenar con la infromacion de peliculas, naves y vehiculos del personaje seleccionado de la tabla
   var tableDos = $('#pelis').DataTable({
+  	  "searching": false,
       data: nomPeli,
       columns: [
               { title: "Peliculas" }
           ]
     });
-
   var tabVehi = $('#vehiculos').DataTable({
+  	  "searching": false,
       data: nomVehi,
       columns: [
               { title: "Vehiculos" }
           ]
     });
-
   var tabStar = $('#starships').DataTable({
+  	  "searching": false,
       data: nomStar,
        columns: [
               { title: "Naves Espaciales" }
           ]
     });
    
-
 //Llamadas AJAX para los personajes
   
    var a= $.ajax({
        url: 'https://swapi.co/api/people/',
        dataType: 'json',
    });
-
     var b=$.ajax({
        url: 'https://swapi.co/api/people/?page=2',
        dataType: 'json',
    });
-
      var c=$.ajax({
        url: 'https://swapi.co/api/people/?page=3',
        dataType: 'json',
    });
-
      var d= $.ajax({
        url: 'https://swapi.co/api/people/?page=4',
        dataType: 'json',
    });
-
        var e= $.ajax({
        url: 'https://swapi.co/api/people/?page=5',
        dataType: 'json',
    });
-
           var f=$.ajax({
        url: 'https://swapi.co/api/people/?page=6',
        dataType: 'json',
    });
-
            var g= $.ajax({
        url: 'https://swapi.co/api/people/?page=7',
        dataType: 'json',
    });
-
               var h=$.ajax({
        url: 'https://swapi.co/api/people/?page=8',
        dataType: 'json',
    });
-
                var i= $.ajax({
        url: 'https://swapi.co/api/people/?page=9',
        dataType: 'json',
@@ -133,8 +130,6 @@
                         tablaPersonajes.rows.add(rI[0].results).draw();
                          $('#divBotonCarga').hide();
              })
-
-
 //Esto es para que cuando alguien seleccione algun personaje de la tabla, se envie la informacion a la tabla de informacion y muestre peliculas, naves y vehiculos
       var arrayPeli=[];
       var arrayVehi=[];
@@ -144,21 +139,14 @@
       var nomStar=[];
 //Metodo que al darle clic mande la informacion al ajax y asi procesar todo lo que devuelve el API
       $('#personajes tbody').on('click', 'tr', function () {
-
         $('#divTablasInfo, #divBotonCarga').show();
-
         tableDos.clear().draw();
-
         tabVehi.clear().draw();
-
         tabStar.clear().draw();
-
         nomPeli=[];
         nomVehi=[];
         nomStar=[];
-
         var data = tablaPersonajes.row( this ).data();
-
          $.ajax({
             url: data.url,
             dataType: 'json',
@@ -166,7 +154,6 @@
             arrayPeli=json.films;
             arrayVehi=json.vehicles;
             arrayStar=json.starships;
-
         $.each(arrayPeli, function (index, value) {
               var peli= 
               $.ajax({
@@ -192,7 +179,6 @@
                    }
           });
         });
-
        $.each(arrayStar, function (index, value) {
                var star=
                $.ajax({
@@ -209,42 +195,30 @@
    });
       //Funciones callback para verificar que el array que se lleno con los nombres es del mismo largo que el array de URLS
       function pintarPeliculas(arrayPeli, nomPeli){
-
         if(arrayPeli.length==nomPeli.length){
            tableDos.row.add([nomPeli]).draw();
         }
            
       }
-
         function pintarVehiculos(arrayVehi, nomVehi){
-
         if(arrayVehi.length==nomVehi.length){
            tabVehi.row.add([nomVehi]).draw();
         }
            
       }
-
         function pintarStarships(arrayStar, nomStar){
-
         if(arrayStar.length==nomStar.length){
            tabStar.row.add([nomStar]).draw();
         }
            
       }
-
 //Esto es el buscador de personajes por el input text
       $('#boton').click(function() {
-
         $('#parraf, #divTablaPers, #divTablasInfo').hide();
-
         $('#botonDevolverse, #divTablaBusc, #divBotonCarga').show();
-
         tablaDeBusc.clear().draw();
-
         var text= $('#busca').val()
-
         var url= 'https://swapi.co/api/people/?search='+text;
-
            $.ajax({
                url: url,
                dataType: 'json',
@@ -253,48 +227,31 @@
                  $('#divBotonCarga').hide();
           });
       })
-
       //Esto es la funcion para esconder tablas mediante el boton de devolverse
       $('#botonDevolverse').click(function(){
-
         tableDos.clear().draw();
-
         tabVehi.clear().draw();
-
         tabStar.clear().draw();
-
         $('#parraf, #divTablaPers').show();
-
         $('#divTablaBusc, #botonDevolverse, #divTablasInfo').hide();
       })
-
       //Metodo para busqueda de informacion en la tabla de peliculas
       $('#tablaBusqueda tbody').on('click', 'tr', function(){
           $('#divTablasInfo, #divBotonCarga').show();
-
               tableDos.clear().draw();
-
               tabVehi.clear().draw();
-
               tabStar.clear().draw();
-
               nomPeli=[];
-
               nomVehi=[];
-
               nomStar=[];
-
               var data = tablaDeBusc.row(this).data();
-
                 $.ajax({
                     url: data.url,
                     dataType: 'json',
                 }).done(function(json) {
-
                     arrayPeli=json.films;
                     arrayVehi=json.vehicles;
                     arrayStar=json.starships;
-
                 $.each(arrayPeli, function (index, value) {
                       var peli= 
                       $.ajax({
@@ -320,7 +277,6 @@
                        }
                   });
                 });
-
                $.each(arrayStar, function (index, value) {
                        var star=
                        $.ajax({
@@ -355,29 +311,110 @@
                 "transform":"translate(-50%,-50%)"
                });
 
+               $('#parraf').css({
+               	"font-size":"18px"
+               })
+
+               $('#logo').css({
+               	"width": "25%",
+               	"height":"auto",
+               	"margin-left": "auto",
+               	"margin-right":"auto",
+               	"display":"block"
+               });
+
+               $('#persCar, #logoHan, #lukeSky').css({
+               	"width":"auto",
+               	"height": "300px",
+                "margin-left": "auto",
+               	"margin-right":"auto",
+               	"display":"block"
+               })
+
   });
     </script>
+
+    <style type="text/css">
+  #tabla1, #tabla2, #trPeli, #trVehi, #trStar, #divTablaPers label, #personajes_info , #personajes_previous, #divTablaBusc label, #divTablasInfo label,
+  #tablaBusqueda_info, #tablaBusqueda_previous,#pelis_info, #vehiculos_info, #starships_info, #pelis_previous, #vehiculos_previous, #starships_previous, #pelis_lenght label,#pelis_next, #vehiculos_next, #starships_next, #personajes_next, #vehiculos_lenght label, #starships_lenght label, #parraf
+  {color: white !important;}
+</style>
     
 </head>
-<body>
-    
+
+<body style="background-image: url(http://getwallpapers.com/wallpaper/full/7/d/b/13657.jpg); background-repeat:no-repeat;
+background-position:center; background-size: cover;" >
+
+	<div class="container-fluid">
+
     <div id="divBotonCarga">
       <img id="imagenCarga" src="https://media.giphy.com/media/y1ZBcOGOOtlpC/giphy.gif" alt="Cargando Tabla">
     </div>
 
-    <input type="text" id="busca" ></input>
+	<div id="divLogo">
+		 <img src="https://logos-download.com/wp-content/uploads/2016/09/Star_Wars_logo-1.png" id="logo">
+	</div>
 
-    <input type="button" name="" id="boton" value="Buscar"></input>
+	<br>
+	<br>
 
+	<div id="sliderStar" class="carousel slide" data-ride="carousel">
+
+
+		  <ul class="carousel-indicators">
+		    <li data-target="#sliderStar" data-slide-to="0" class="active"></li>
+		    <li data-target="#sliderStar" data-slide-to="1"></li>
+		    <li data-target="#sliderStar" data-slide-to="2"></li>
+		  </ul>
+
+		  <div class="carousel-inner">
+			    <div class="carousel-item active">
+				      	<img id="logoHan" src="http://digitalspyuk.cdnds.net/17/50/980x490/landscape-1482425583-star-wars-films-ranked.jpg" alt="personajes">
+				      	 <div class="carousel-caption">
+						    <h3>Star Wars</h3>
+						    <p>Informacion de todos los personajes aqui</p>
+						 </div>
+				    </div>
+				    <div class="carousel-item">
+				      	<img id="lukeSky" src="https://static1.squarespace.com/static/51b3dc8ee4b051b96ceb10de/t/54107e79e4b0d69444e9a357/1410367101186/star-wars-episode-vii-millenium-falcon-ariel-set-photo?format=750w" alt="naves">
+				    </div>
+				    <div class="carousel-item">
+				     	 <img id="persCar" src="http://media.comicbook.com/2017/12/star-wars-movies2-1066093.jpg" alt="peliculas">
+			    </div>
+		  </div>
+
+
+		  <a class="carousel-control-prev" href="#sliderStar" data-slide="prev">
+		    <span class="carousel-control-prev-icon"></span>
+		  </a>
+		  <a class="carousel-control-next" href="#sliderStar" data-slide="next">
+		    <span class="carousel-control-next-icon"></span>
+		  </a>
+
+	</div>
+
+	<br>
+	<br>
+   
+    <input type="text" id="busca" class="form-control" style="width: 15%"></input>
+
+    <br>
+
+    <input type="button" name="" id="boton" value="Buscar" class="btn btn-primary"></input>
+
+    <br>
     <br>
 
     <p id="parraf">Seleccione el personaje de la tabla para ver su informacion: </p>
 
-    <input type="button" name="" id="botonDevolverse" value="Devolverse a tabla principal"></input>
+    <input type="button" name="" id="botonDevolverse" value="Devolverse a tabla principal" class="btn btn-secondary"></input>
 
-    <div id="divTablaPers">
-      <table id="personajes" class="display" style="width:100%">
-        <thead>
+    <br>
+    <br>
+
+    <div id="divTablaPers" class="table-responsive">
+      <table id="personajes" class="display table" style="width:100%">
+        <thead id="tabla1">
             <tr>
                 <th>Nombre</th>
                 <th>Altura</th>
@@ -390,21 +427,49 @@
     </div>
 
 
-    <div id="divTablaBusc">
+    <div id="divTablaBusc" class="table-responsive">
         <table id="tablaBusqueda" class="display" style="width:100%">
+        	<thead>
+            <tr id="tabla2">
+                <th>Nombre</th>
+                <th>Altura</th>
+                <th>Color de Pelo</th>
+                <th>Color de Piel</th>
+                <th>Genero</th>
+            </tr>
+        </thead>
     </table>
     </div>
 
-    <div id="divTablasInfo">
+    <div id="divTablasInfo" class="table-responsive">
       <table id="pelis" class="display" style="width:100%"> 
+      	<thead>
+            <tr id="trPeli">
+                <th>Pelicula</th>
+            </tr>
+        </thead>
     </table>
 
       <table id="vehiculos" class="display" style="width:100%"> 
+      	<thead>
+            <tr id="trVehi">
+                <th>Vehiculo</th>
+            </tr>
+        </thead>
     </table>
 
       <table id="starships" class="display" style="width:100%"> 
+      	<thead>
+            <tr id="trStar">
+                <th>Nave Espacial</th>
+            </tr>
+        </thead>
     </table>
     </div>
+
+	</div>
+
+   
 
 </body>
 </html>
